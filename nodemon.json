@@ -1,0 +1,6 @@
+{
+  "watch": ["ApiManager", "src", "index.ts", "tsconfig.json", "package.json", "bun.config.js"],
+  "ext": "ts,json",
+  "ignore": ["src/**/*.test.js"],
+  "exec": "bun run "
+}
