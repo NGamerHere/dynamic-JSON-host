@@ -8,6 +8,7 @@ import LoginRoute from "./src/routes/LoginRoute.ts";
 import RegistrationRoute from "./src/routes/RegistrationRoute.ts";
 import LogoutRoute from "./src/routes/LogoutRoute.ts";
 import HomeRoutes from "./src/routes/HomeRoutes.ts";
+import Api from "./src/models/Api.ts";
 
 const app = express();
 app.use(express.json());
@@ -38,22 +39,51 @@ app.use(RegistrationRoute);
 app.use(LogoutRoute);
 app.use(HomeRoutes);
 
+app.get("/api/:username", async (req, res) => {
+    const username:string = req.params.username;
+    if (req.session.user) {
+        const User = await user.findOne({ name: username });
+
+        if(User && User.name === username && username === req.session.user.name){
+            res.render('dashboard',{name:User.name});
+        }else {
+            return res.render('SomethingError',{message:"User not found"});
+        }
+    }else {
+        return res.redirect('/login');
+    }
 
 
-app.post("/addElement",async (req:Request,res:Response)=>{
-   if (req.session.user) {
-       const element: string = req.body.element;
-       const userElement = await user.findOne({ email: req.session.user.email });
-         userElement.element = element;
-            userElement.save().then((result: any) => {
-                console.log("new element was added "+result.element);
-                res.redirect('/dashboard');
-            }).catch((err: any) => {
-                console.log(err);
-                res.render('dashboard',{error:true,message:"Something went wrong"});
-            });
-   }
-})
+});
+
+
+
+
+app.post("/addElement", async (req, res) => {
+    if (req.session.user) {
+        const element = req.body.element;
+
+        // Validate req.body.element
+        if (!element) {
+            return res.status(400).send("Element is required");
+        }
+
+        const api = new Api({
+            userId: req.session.user._id,
+            element: element
+        });
+
+        try {
+            await api.save();  // Wait for the API document to be saved
+            res.redirect('dashboard');
+        } catch (error) {
+            console.error(error);
+            res.status(500).send("Error adding element");
+        }
+    } else {
+        return res.redirect('/login');
+    }
+});
 
 app.use(handle404);
 
