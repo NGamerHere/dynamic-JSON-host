@@ -13,11 +13,12 @@
 <div class="bg-white p-8 rounded shadow-md ">
     <h2 class="text-2xl font-semibold mb-4">Dashboard</h2>
     <h3 class="text-lg">hi <%= name %></h3>
+    <h3 class="text-lg">your pass key: <%= key %></h3>
     <div class="flex justify-center">
         <div class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2  gap-2 ">
             <% router.forEach(item => { %>
                 <div class="border border-black p-5">
-                    <h2 class="pb-3">API at route  /<%= item.routeName %></h2>
+                    <h2 class="pb-3">API at route  <a href="/api/<%= name %>/<%= item.routeName %>"> / <%= item.routeName%> </a> </h2>
                     <pre><%= JSON.stringify(item.routeData, null, 2) %></pre>
                     <button onclick="deleteRoute('<%= item.routeName %>')">delete</button>
 

@@ -1,5 +1,6 @@
 import express,{Request,Response} from "express";
 import api from "../models/Api.ts";
+import user from "../models/User.ts";
 
 const HomeRoutes=express.Router();
 
@@ -15,8 +16,8 @@ HomeRoutes.get("/", (req: Request, res: Response) => {
 HomeRoutes.get('/dashboard', async (req: Request, res: Response) => {
     if (req.session.user) {
         const router=await api.find({userId: req.session.user._id});
-
-        res.render('dashboard',{name: req.session.user.name,router:router});
+        const User = await user.findOne({ _id: req.session.user._id });
+        res.render('dashboard',{name: req.session.user.username,router:router,key:User.passKey});
     } else {
         res.redirect('/login');
     }

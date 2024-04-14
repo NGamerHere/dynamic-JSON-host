@@ -41,6 +41,11 @@ app.use(RegistrationRoute);
 app.use(LogoutRoute);
 app.use(HomeRoutes);
 app.use(ApiRouter);
+
+app.get('/test', (req: Request, res: Response) => {
+    res.render('tester');
+});
+
 app.use(handle404);
 
 

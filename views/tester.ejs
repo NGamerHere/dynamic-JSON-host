@@ -1,0 +1,20 @@
+<html>
+ <head>
+<title>PHP Test</title>
+ </head>
+<body>
+   <script>
+       // client-side JavaScript
+       fetch('/api/ganesh/siva')
+           .then(response => response.json())
+           .then(data => {
+               console.log(data);
+               console.log(data.name);
+               // Do something with the data
+           })
+           .catch(error => {
+               console.error('Error:', error);
+           });
+   </script>
+</body>
+</html>

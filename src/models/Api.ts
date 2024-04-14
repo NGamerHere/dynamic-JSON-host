@@ -8,6 +8,7 @@ const apiSchema = new mongoose.Schema({
     },
     routeName: {
         type: String,
+        unique: true,
         required: true
     },
     routeData:{
