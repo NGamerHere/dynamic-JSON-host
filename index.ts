@@ -9,6 +9,7 @@ import RegistrationRoute from "./src/routes/RegistrationRoute.ts";
 import LogoutRoute from "./src/routes/LogoutRoute.ts";
 import HomeRoutes from "./src/routes/HomeRoutes.ts";
 import Api from "./src/models/Api.ts";
+import setUpRoutes from "./src/services/SetupRoutes.ts";
 
 const app = express();
 app.use(express.json());
@@ -65,19 +66,41 @@ app.get("/addApi", async (req, res) => {
     }
 });
 
+app.delete("/api/:routeName", async (req, res) => {
+   const routeName:string = req.params.routeName;
+    if (req.session.user) {
+        const data = await Api.findOne({userId: req.session.user._id, routeName: routeName});
+        if (data) {
+            await Api.deleteOne({userId: req.session.user._id, routeName: routeName});
+            res.send("Data deleted");
+        } else {
+            res.status(400).send("Data not found");
+        }
+    }else {
+        return res.redirect('/login');
+
+    }
+});
+
 app.post("/addApi", async (req, res) => {
     if (req.session.user) {
         try {
             if (!req.body.routerName || !req.body.routeData) {
                 return res.status(400).send("Invalid data");
             }
+
             const data = req.body;
+            const gkApi = await Api.findOne({ userId: req.session.user._id, routeName: data.routerName });
+            if (gkApi) {
+                return res.status(400).json({ message: "Data in that route already exits" });
+            }
             const ds = new Api({
                 userId: req.session.user._id,
                 routeName: data.routerName,
                 routeData: data.routeData
             });
             await ds.save();
+            await setUpRoutes(app);
             res.send("Data saved");
         } catch (error) {
             console.error("Error saving data:", error);
@@ -88,9 +111,13 @@ app.post("/addApi", async (req, res) => {
     }
 });
 
-app.use(handle404);
+
+
+
+
 
 
 app.listen(3000, async () => {
+    setUpRoutes(app);
     console.log('Server is running on port 3000');
 });

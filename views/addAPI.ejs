@@ -34,10 +34,11 @@
                     console.log(ds);
                     if (klm.ok) {
                         console.log("Data sent successfully");
-                        window.location.href = "/";
-                        window.location.replace("/");
+                        window.location.href = "/dashboard";
+                        window.location.replace("/dashboard");
                     } else {
-                        alert("Error sending data , please try again");
+                        const errorMessage = await klm.json();
+                        alert(errorMessage.message);
                         console.error("Error sending data");
                     }
 
