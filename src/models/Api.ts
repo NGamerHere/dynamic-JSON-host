@@ -6,8 +6,12 @@ const apiSchema = new mongoose.Schema({
         ref: 'user',
         required: true
     },
-    element: {
+    routeName: {
         type: String,
+        required: true
+    },
+    routeData:{
+        type: mongoose.Schema.Types.Mixed,
         required: true
     }
 });

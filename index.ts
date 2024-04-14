@@ -57,28 +57,31 @@ app.get("/api/:username", async (req, res) => {
 });
 
 
-
-
-app.post("/addElement", async (req, res) => {
+app.get("/addApi", async (req, res) => {
     if (req.session.user) {
-        const element = req.body.element;
+        res.render('addAPI');
+    } else {
+        return res.redirect('/login');
+    }
+});
 
-        // Validate req.body.element
-        if (!element) {
-            return res.status(400).send("Element is required");
-        }
-
-        const api = new Api({
-            userId: req.session.user._id,
-            element: element
-        });
-
+app.post("/addApi", async (req, res) => {
+    if (req.session.user) {
         try {
-            await api.save();  // Wait for the API document to be saved
-            res.redirect('dashboard');
+            if (!req.body.routerName || !req.body.routeData) {
+                return res.status(400).send("Invalid data");
+            }
+            const data = req.body;
+            const ds = new Api({
+                userId: req.session.user._id,
+                routeName: data.routerName,
+                routeData: data.routeData
+            });
+            await ds.save();
+            res.send("Data saved");
         } catch (error) {
-            console.error(error);
-            res.status(500).send("Error adding element");
+            console.error("Error saving data:", error);
+            res.status(500).send("Error saving data");
         }
     } else {
         return res.redirect('/login');

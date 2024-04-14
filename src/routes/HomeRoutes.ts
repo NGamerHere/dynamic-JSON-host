@@ -13,7 +13,7 @@ HomeRoutes.get("/", (req: Request, res: Response) => {
 
 HomeRoutes.get('/dashboard', (req: Request, res: Response) => {
     if (req.session.user) {
-        res.render('dashboard',{name: req.session.user.name});
+        res.render('dashboard',{name: req.session.user.name,});
     } else {
         res.redirect('/login');
     }
