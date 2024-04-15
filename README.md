@@ -1,4 +1,4 @@
-# apimanager
+# Dynamic API host
 
 To install dependencies:
 
