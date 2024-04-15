@@ -21,7 +21,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 
-DBConnector("mongodb+srv://doadmin:52Cv391e7q8Z4dDl@apidynamo-cba44ec3.mongo.ondigitalocean.com/admin?tls=true&authSource=admin");
+DBConnector(`mongodb+srv://${process.env.DBUSERNAME}:${process.env.DBPASSWORD}@apidynamo-cba44ec3.mongo.ondigitalocean.com/admin?tls=true&authSource=admin`);
 
 
 
