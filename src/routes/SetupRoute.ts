@@ -4,7 +4,7 @@ import Api from "../models/Api.ts";
 
 const SetupRoute=express.Router();
 
-SetupRoute.get("/api/:username/:routeName", async (req, res) => {
+SetupRoute.get("/api/:username/:routeName", async (req:Request, res:Response) => {
     const username:string = req.params.username;
     const routeName:string = req.params.routeName;
     const key:string = req.query.key as string;

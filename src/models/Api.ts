@@ -14,6 +14,14 @@ const apiSchema = new mongoose.Schema({
     routeData:{
         type: mongoose.Schema.Types.Mixed,
         required: true
+    },
+    routePath:{
+        type: String,
+        required: true
+    },
+    routeDescription:{
+        type: String,
+        required: true
     }
 });
 

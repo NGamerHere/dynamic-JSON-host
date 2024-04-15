@@ -1,62 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Add the new Route</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+
+<body class="bg-gray-100">
+
 <div class="flex items-center justify-center h-screen">
-    <div class="border  shadow-md p-8 rounded-lg">
-        <h1 class="text-2xl font-bold text-center">Add the new Route</h1>
-        <div class="flex flex-col">
-            <label for="routeName">route Name</label>
-            <input type="text" id="routeName" placeholder="Enter the route name" class="border border-black shadow-md">
-            <label for="jsonData">enter the json data</label>
-            <textarea id="jsonData" rows="10" cols="50" class="border border-black shadow-md"></textarea>
-            <button onclick="processJson()" class="mt-3 ml-20 w-32 border border-black rounded-xl shadow-md hover:bg-gray-100">Add API</button>
-       </div>
+    <div class="border shadow-md p-8 rounded-lg w-full max-w-xl">
+        <h1 class="text-2xl font-bold text-center mb-6">Add a New Route</h1>
+        <div class="flex flex-col space-y-4">
+
+            <!-- Route Name Input -->
+            <div class="flex flex-col">
+                <label for="routeName" class="text-sm">Route Name</label>
+                <input type="text" id="routeName" placeholder="Enter the route name"
+                       class="border border-gray-300 shadow-md rounded-md py-2 px-3">
+            </div>
+
+            <!-- Route Path Input -->
+            <div class="flex flex-col">
+                <label for="routePath" class="text-sm">Route Path</label>
+                <input type="text" id="routePath" placeholder="Enter the route path"
+                       class="border border-gray-300 shadow-md rounded-md py-2 px-3">
+            </div>
+
+            <!-- Route Description Input -->
+            <div class="flex flex-col">
+                <label for="routeDescription" class="text-sm">Route Description</label>
+                <input type="text" id="routeDescription" placeholder="Enter the route description"
+                       class="border border-gray-300 shadow-md rounded-md py-2 px-3">
+            </div>
+
+            <!-- JSON Data Textarea -->
+            <div class="flex flex-col">
+                <label for="jsonData" class="text-sm">Enter the JSON Data</label>
+                <textarea id="jsonData" rows="10" class="border border-gray-300 shadow-md rounded-md py-2 px-3"></textarea>
+            </div>
+
+            <!-- Add API Button -->
+            <button onclick="AddApi()"
+                    class="mt-6 w-32 bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600">
+                Add API
+            </button>
+
+        </div>
+    </div>
 </div>
 
-
-
-        <script>
-
-            async function  processJson() {
-                var jsonData = document.getElementById('jsonData').value;
-                var routeName = document.getElementById('routeName').value;
-                try {
-                    jsonData = JSON.parse(jsonData);
-                    const ds={
-                        routerName:routeName,
-                        routeData:jsonData
-                    }
-                    const klm=await fetch('http://localhost:3000/addApi', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(ds),
-                    })
-                    console.log(ds);
-                    if (klm.ok) {
-                        console.log("Data sent successfully");
-                        window.location.href = "/dashboard";
-                        window.location.replace("/dashboard");
-                    } else {
-                        const errorMessage = await klm.json();
-                        alert(errorMessage.message);
-                        console.error("Error sending data");
-                    }
-
-                } catch (error) {
-                    console.error("Error parsing JSON data:", error);
-                }
+<script>
+    async function AddApi() {
+        var jsonData = document.getElementById('jsonData').value;
+        var routeName = document.getElementById('routeName').value;
+        var routePath = document.getElementById('routePath').value;
+        var routeDescription = document.getElementById('routeDescription').value;
+        try {
+            jsonData = JSON.parse(jsonData);
+            const ds = {
+                routerName: routeName,
+                routeData: jsonData,
+                routePath: routePath,
+                routeDescription: routeDescription
+            }
+            const klm = await fetch('http://localhost:3000/addApi', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(ds),
+            })
+            console.log(ds);
+            if (klm.ok) {
+                console.log("Data sent successfully");
+                window.location.href = "/dashboard";
+            } else {
+                const errorMessage = await klm.json();
+                alert(errorMessage.message);
+                console.error("Error sending data");
             }
 
-        </script>
-
-
-
+        } catch (error) {
+            console.error("Error parsing JSON data:", error);
+        }
+    }
+</script>
 
 </body>
+
 </html>

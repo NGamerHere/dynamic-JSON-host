@@ -42,7 +42,9 @@ ApiRouter.post("/addApi", async (req, res) => {
             const ds = new Api({
                 userId: req.session.user._id,
                 routeName: data.routerName,
-                routeData: data.routeData
+                routeData: data.routeData,
+                routePath: data.routePath,
+                routeDescription: data.routeDescription
             });
             await ds.save();
             res.send("Data saved");

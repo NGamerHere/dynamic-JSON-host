@@ -5,40 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DashBoard Page</title>
+     <link rel="stylesheet" href="styles/dashboardStyle.css">
     <!-- Include Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+<body class="bg-gray-100 h-screen flex flex-col items-center">
 
-<body class="bg-gray-100 h-screen flex items-center justify-center">
-<div class="bg-white p-8 rounded shadow-md ">
-    <h2 class="text-2xl font-semibold mb-4">Dashboard</h2>
-    <h3 class="text-lg">hi <%= name %></h3>
-    <h3 class="text-lg">your pass key: <%= key %></h3>
-    <div class="flex justify-center">
-        <div class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2  gap-2 ">
-            <% router.forEach(item => { %>
-                <div class="border border-black p-5">
-                    <h2 class="pb-3">API at route  <a href="/api/<%= name %>/<%= item.routeName %>"> / <%= item.routeName%> </a> </h2>
-                    <pre><%= JSON.stringify(item.routeData, null, 2) %></pre>
-                    <button onclick="deleteRoute('<%= item.routeName %>')">delete</button>
-
-                </div>
-            <% }); %>
+<!-- Navbar -->
+<nav class="bg-white p-4 w-full shadow-md mb-6">
+    <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-semibold">Dashboard</h2>
+        <div class="flex space-x-4">
+            <a href="/addApi" class="btn-nav">Add New API</a>
+            <a href="/logout" class="btn-nav">Logout</a>
         </div>
     </div>
+</nav>
 
-    <div class="flex flex- row">
-        <button class="w-32 bg-blue-500 text-white py-2 px-4 mt-3 mx-3  rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-            <a href="/addApi">add new api</a>
-        </button>
-        <button class="w-32 bg-red-500 text-white py-2 px-4 mt-3  rounded hover:bg-red-600 focus:outline-none focus:bg-red-600">
-            <a href="/logout">logout</a>
-        </button>
+<div class="bg-white p-8 rounded shadow-md w-full max-w-4xl">
+
+    <!-- Greeting -->
+    <h3 class="text-lg mb-4">Hi <%= name %></h3>
+    <h3 class="text-lg mb-4">Your pass key: <%= key %></h3>
+
+    <!-- Routes Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        <% router.forEach(item => { %>
+            <div class="border border-gray-300 rounded-lg p-6 shadow-md">
+                <h2 class="pb-3 text-lg font-medium">
+                    API at route
+                    <a href="/api/<%= name %>/<%= item.routeName %>?key=<%= key %>" class="text-blue-500 hover:text-blue-700"> / <%= item.routeName %> </a>
+                </h2>
+                <h2 class="pb-3 text-lg font-medium">Route Name: <%= item.routeName %></h2>
+                <h3 class="pb-3 font-bold">Route Description</h3>
+                <p class="mb-4"><%= item.routeDescription %></p>
+                <button onclick="deleteRoute('<%= item.routeName %>')" class="btn-delete">Delete</button>
+            </div>
+        <% }); %>
     </div>
+
+    <!-- Action Buttons -->
+
 
 </div>
 
+<!-- Delete Route Script -->
 <script src="deleteRoute.js"></script>
+
 </body>
+
+
 
 </html>
