@@ -33,7 +33,7 @@ RegistrationRoute.post('/registration',async (req:Request,res:Response)=> {
             passKey: key
         });
         newUser.save().then((result: any) => {
-            console.log("new user was added "+result.name);
+            console.log("new user was added "+result.username);
             res.redirect('/login');
         }).catch((err: any) => {
             console.log(err);

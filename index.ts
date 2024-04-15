@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import bodyParser from "body-parser";
 import session from "express-session";
+var cors = require('cors')
 import DBConnector from "./src/services/connection.ts";
 import handle404 from "./src/services/Notfound.ts";
 import LoginRoute from "./src/routes/LoginRoute.ts";
@@ -14,6 +15,7 @@ require('dotenv').config();
 
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -21,7 +23,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 
-DBConnector(`mongodb+srv://${process.env.DBUSERNAME}:${process.env.DBPASSWORD}@apidynamo-cba44ec3.mongo.ondigitalocean.com/admin?tls=true&authSource=admin`);
+DBConnector(`mongodb+srv://${process.env.DBUSERNAME}:${process.env.DBPASSWORD}@apidynamo-cba44ec3.mongo.ondigitalocean.com/collector?tls=true&authSource=admin`);
 
 
 
