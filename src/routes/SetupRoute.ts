@@ -12,7 +12,7 @@ SetupRoute.get("/api/:username/:routeName", async (req:Request, res:Response) =>
 
     const User = await user.findOne({ username: username });
     if(User && User.username === username){
-        const data = await Api.findOne({ userId: User._id, routeName: routeName });
+        const data = await Api.findOne({ userId: User._id, routePath: routeName });
         if (data) {
             if (User.passKey != key) {
                 return res.status(401).send("Unauthorized");

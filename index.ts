@@ -9,6 +9,9 @@ import LogoutRoute from "./src/routes/LogoutRoute.ts";
 import HomeRoutes from "./src/routes/HomeRoutes.ts";
 import setUpRoutes from "./src/routes/SetupRoute.ts";
 import ApiRouter from "./src/routes/ApiRouter.ts";
+require('dotenv').config();
+
+
 
 const app = express();
 app.use(express.json());
@@ -18,7 +21,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 
-DBConnector("mongodb://127.0.0.1:27017/tester");
+DBConnector("mongodb+srv://doadmin:52Cv391e7q8Z4dDl@apidynamo-cba44ec3.mongo.ondigitalocean.com/admin?tls=true&authSource=admin");
 
 
 
@@ -53,6 +56,6 @@ app.use(handle404);
 
 
 
-app.listen(3000, async () => {
+app.listen(process.env.PORT, async () => {
     console.log('Server is running on port 3000');
 });
