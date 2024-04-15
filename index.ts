@@ -23,7 +23,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 
-DBConnector(`mongodb+srv://${process.env.DBUSERNAME}:${process.env.DBPASSWORD}@apidynamo-cba44ec3.mongo.ondigitalocean.com/collector?tls=true&authSource=admin`);
+DBConnector(`mongodb+srv://${process.env.DBUSERNAME}:${process.env.DBPASSWORD}@cluster4545.oj2b5mm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster4545`);
 
 
 
