@@ -22,8 +22,9 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
+const url=`mongodb+srv://${process.env.DBUSERNAME}:${process.env.DBPASSWORD}@cluster0.nl7thfs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
-DBConnector(`mongodb+srv://${process.env.DBUSERNAME}:${process.env.DBPASSWORD}@cluster4545.oj2b5mm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster4545`);
+DBConnector(url);
 
 
 
