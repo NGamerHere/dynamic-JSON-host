@@ -1,7 +1,8 @@
 import express, { Request, Response } from 'express';
 import bodyParser from "body-parser";
 import session from "express-session";
-var cors = require('cors')
+import morgan from "morgan";
+const cors = require('cors')
 import DBConnector from "./src/services/connection.ts";
 import handle404 from "./src/services/Notfound.ts";
 import LoginRoute from "./src/routes/LoginRoute.ts";
@@ -12,9 +13,12 @@ import setUpRoutes from "./src/routes/SetupRoute.ts";
 import ApiRouter from "./src/routes/ApiRouter.ts";
 require('dotenv').config();
 
-
-
 const app = express();
+
+// Configure morgan middleware
+morgan.token('client-ip', (req, res) => req.ip);
+app.use(morgan(':client-ip - :method :url :status :res[content-length] - :response-time ms'));
+
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,11 +27,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 const url=`mongodb+srv://${process.env.DBUSERNAME}:${process.env.DBPASSWORD}@cluster0.nl7thfs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
-
-DBConnector("mongodb://127.0.0.1:27017/tester");
-
-
-
+DBConnector(url);
 
 app.use(session({
     secret: 'hello there',
@@ -35,11 +35,9 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
         secure: false,
-        //the user was login in for 7 days
-        maxAge: 60 * 60 * 24 * 7 * 1000,
+        maxAge: 60 * 60 * 24 * 7 * 1000, // 7 days
     },
 }));
-
 
 app.use(setUpRoutes);
 app.use(LoginRoute);
@@ -47,17 +45,7 @@ app.use(RegistrationRoute);
 app.use(LogoutRoute);
 app.use(HomeRoutes);
 app.use(ApiRouter);
-
-app.get('/test', (req: Request, res: Response) => {
-    res.render('tester');
-});
-
 app.use(handle404);
-
-
-
-
-
 
 app.listen(process.env.PORT, async () => {
     console.log('Server is running on port 3000');
