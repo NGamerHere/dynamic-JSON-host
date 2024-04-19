@@ -55,15 +55,23 @@
         var jsonData = document.getElementById('jsonData').value;
         var routeName = document.getElementById('routeName').value;
         var routePath = document.getElementById('routePath').value;
+
         var routeDescription = document.getElementById('routeDescription').value;
         try {
-            jsonData = JSON.parse(jsonData);
+            try {
+                jsonData = JSON.parse(jsonData);
+            }catch (e) {
+                alert("Invalid JSON data");
+                return;
+            }
+
             const ds = {
                 routerName: routeName,
                 routeData: jsonData,
                 routePath: routePath,
                 routeDescription: routeDescription
             }
+
             const klm = await fetch('/addApi', {
                 method: 'POST',
                 headers: {

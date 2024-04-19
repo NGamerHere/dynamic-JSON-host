@@ -1,6 +1,10 @@
 import express,{Request,Response} from "express";
 import user from "../models/User.ts";
 import generateRandomKey from "../services/generateRandomKey.ts";
+import MailService from "../services/mailService/MailService.ts";
+const nodemailer = require("nodemailer");
+
+
 
 const RegistrationRoute=express.Router();
 
@@ -32,8 +36,10 @@ RegistrationRoute.post('/registration',async (req:Request,res:Response)=> {
             password: password,
             passKey: key
         });
-        newUser.save().then((result: any) => {
+
+        newUser.save().then(async (result: any) => {
             console.log("new user was added "+result.username);
+            MailService(email,key);
             res.redirect('/login');
         }).catch((err: any) => {
             console.log(err);
@@ -42,5 +48,6 @@ RegistrationRoute.post('/registration',async (req:Request,res:Response)=> {
     }
 
 });
+
 
 export default RegistrationRoute;

@@ -1,5 +1,8 @@
 import express,{Request,Response} from "express";
 import user from "../models/User.ts";
+const nodemailer = require("nodemailer");
+require('dotenv').config();
+
 
 const LoginRoute=express.Router();
 interface UserData{
@@ -29,7 +32,8 @@ LoginRoute.post('/login',async (req:Request,res:Response)=>{
                 email:flame.email
             }
             req.session.user = ds;
-            console.log(flame.passKey);
+            console.log(req.socket.remoteAddress);
+            console.log(req.ip);
             res.redirect('/dashboard');
         } else {
             res.render('login',{error:true,message:"Password is incorrect"})
@@ -39,5 +43,7 @@ LoginRoute.post('/login',async (req:Request,res:Response)=>{
     }
 
 });
+
+
 
 export default LoginRoute;

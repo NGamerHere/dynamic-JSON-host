@@ -24,7 +24,7 @@ app.set('view engine', 'ejs');
 
 const url=`mongodb+srv://${process.env.DBUSERNAME}:${process.env.DBPASSWORD}@cluster0.nl7thfs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
-DBConnector(url);
+DBConnector("mongodb://127.0.0.1:27017/tester");
 
 
 

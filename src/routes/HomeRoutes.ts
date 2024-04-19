@@ -17,6 +17,9 @@ HomeRoutes.get('/dashboard', async (req: Request, res: Response) => {
     if (req.session.user) {
         const router=await api.find({userId: req.session.user._id});
         const User = await user.findOne({ _id: req.session.user._id });
+        if (!User) {
+            return res.redirect('/login');
+        }
         res.render('dashboard',{name: req.session.user.username,router:router,key:User.passKey});
     } else {
         res.redirect('/login');
