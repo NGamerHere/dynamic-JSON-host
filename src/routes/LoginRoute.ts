@@ -34,6 +34,7 @@ LoginRoute.post('/login',async (req:Request,res:Response)=>{
                 email:flame.email
             }
             req.session.user = ds;
+            console.log(flame.username + " logged in")
             res.redirect('/dashboard');
         } else {
             res.render('login',{error:true,message:"Password is incorrect"})
