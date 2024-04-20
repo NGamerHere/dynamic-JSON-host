@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import bodyParser from "body-parser";
 import session from "express-session";
-import morgan from "morgan";
 const cors = require('cors')
 import https from "https";
 import fs from "fs";
@@ -16,10 +15,6 @@ import ApiRouter from "./src/routes/ApiRouter.ts";
 require('dotenv').config();
 
 const app = express();
-
-// Configure morgan middleware
-
-
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));

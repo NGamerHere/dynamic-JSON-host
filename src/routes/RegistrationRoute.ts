@@ -2,7 +2,7 @@ import express,{Request,Response} from "express";
 import user from "../models/User.ts";
 import generateRandomKey from "../services/generateRandomKey.ts";
 import MailService from "../services/mailService/MailService.ts";
-const nodemailer = require("nodemailer");
+
 
 
 

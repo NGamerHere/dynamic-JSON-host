@@ -14,12 +14,18 @@ SetupRoute.get("/api/:username/:routeName", async (req:Request, res:Response) =>
     if(User && User.username === username){
         const data = await Api.findOne({ userId: User._id, routePath: routeName });
         if (data) {
-            if (User.passKey != key) {
-                return res.status(401).send("Unauthorized");
-            }
-            else {
+            if (data.accessType === "private") {
+
+                if (User.passKey != key) {
+                    return res.status(401).send("Unauthorized");
+                }
+                else {
+                    res.status(200).send(data.routeData);
+                }
+            }else {
                 res.status(200).send(data.routeData);
             }
+
         }
 
         else {

@@ -1,66 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Add the new Route</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-
 <body class="bg-gray-100">
-
 <div class="flex items-center justify-center h-screen">
     <div class="border shadow-md p-8 rounded-lg w-full max-w-xl">
         <h1 class="text-2xl font-bold text-center mb-6">Add a New Route</h1>
         <div class="flex flex-col space-y-4">
-
             <!-- Route Name Input -->
             <div class="flex flex-col">
                 <label for="routeName" class="text-sm">Route Name</label>
-                <input type="text" id="routeName" placeholder="Enter the route name"
-                       class="border border-gray-300 shadow-md rounded-md py-2 px-3">
+                <input type="text" id="routeName" placeholder="Enter the route name" class="border border-gray-300 shadow-md rounded-md py-2 px-3" required>
             </div>
-
             <!-- Route Path Input -->
             <div class="flex flex-col">
                 <label for="routePath" class="text-sm">Route Path</label>
-                <input type="text" id="routePath" placeholder="Enter the route path"
-                       class="border border-gray-300 shadow-md rounded-md py-2 px-3">
+                <input type="text" id="routePath" placeholder="Enter the route path" class="border border-gray-300 shadow-md rounded-md py-2 px-3" required>
             </div>
-
             <!-- Route Description Input -->
             <div class="flex flex-col">
                 <label for="routeDescription" class="text-sm">Route Description</label>
-                <input type="text" id="routeDescription" placeholder="Enter the route description"
-                       class="border border-gray-300 shadow-md rounded-md py-2 px-3">
+                <input type="text" id="routeDescription" placeholder="Enter the route description" class="border border-gray-300 shadow-md rounded-md py-2 px-3" required>
             </div>
-
             <!-- JSON Data Textarea -->
             <div class="flex flex-col">
                 <label for="jsonData" class="text-sm">Enter the JSON Data</label>
-                <textarea id="jsonData" rows="10" class="border border-gray-300 shadow-md rounded-md py-2 px-3"></textarea>
+                <textarea id="jsonData" rows="10" class="border border-gray-300 shadow-md rounded-md py-2 px-3" required></textarea>
             </div>
-
+            <!-- Public/Private Radio Buttons -->
+            <div class="flex flex-col">
+                <label class="text-sm font-bold">Access Type</label>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <input type="radio" id="public" name="accessType" value="public" class="mr-2" checked>
+                        <label for="public" class="text-sm">Public</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" id="private" name="accessType" value="private" class="mr-2">
+                        <label for="private" class="text-sm">Private</label>
+                    </div>
+                </div>
+            </div>
             <!-- Add API Button -->
-            <button onclick="AddApi()"
-                    class="mt-6 w-32 bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600">
+            <button onclick="AddApi()" class="mt-6 w-32 bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600">
                 Add API
             </button>
-
         </div>
     </div>
 </div>
-
 <script>
     async function AddApi() {
         var jsonData = document.getElementById('jsonData').value;
         var routeName = document.getElementById('routeName').value;
         var routePath = document.getElementById('routePath').value;
-
         var routeDescription = document.getElementById('routeDescription').value;
+        var accessType = document.querySelector('input[name="accessType"]:checked').value;
+
         try {
             try {
                 jsonData = JSON.parse(jsonData);
-            }catch (e) {
+            } catch (e) {
                 alert("Invalid JSON data");
                 return;
             }
@@ -69,8 +70,9 @@
                 routerName: routeName,
                 routeData: jsonData,
                 routePath: routePath,
-                routeDescription: routeDescription
-            }
+                routeDescription: routeDescription,
+                accessType: accessType
+            };
 
             const klm = await fetch('/addApi', {
                 method: 'POST',
@@ -78,8 +80,10 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(ds),
-            })
+            });
+
             console.log(ds);
+
             if (klm.ok) {
                 console.log("Data sent successfully");
                 window.location.href = "/dashboard";
@@ -88,13 +92,10 @@
                 alert(errorMessage.message);
                 console.error("Error sending data");
             }
-
         } catch (error) {
             console.error("Error parsing JSON data:", error);
         }
     }
 </script>
-
 </body>
-
 </html>

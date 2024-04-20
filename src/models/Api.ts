@@ -22,6 +22,9 @@ const apiSchema = new mongoose.Schema({
     routeDescription:{
         type: String,
         required: true
+    },accessType:{
+      type: String,
+        required: true
     }
 });
 

@@ -39,12 +39,15 @@ ApiRouter.post("/addApi", async (req, res) => {
             if (gkApi) {
                 return res.status(400).json({ message: "Data in that route already exits" });
             }
+
+
             const ds = new Api({
                 userId: req.session.user._id,
                 routeName: data.routerName,
                 routeData: data.routeData,
                 routePath: data.routePath,
-                routeDescription: data.routeDescription
+                routeDescription: data.routeDescription,
+                accessType: data.accessType
             });
             await ds.save();
             res.send("Data saved");
