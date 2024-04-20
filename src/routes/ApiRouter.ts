@@ -53,13 +53,15 @@ ApiRouter.post("/addApi", async (req, res) => {
                 accessType: data.accessType
             });
             await ds.save();
-            const keySercher=await Api.findOne({userId: req.session.user._id, routeName: data.routerName});
-            const apikey=await new APIkeys({
-                userId: req.session.user._id,
-                ApiID: keySercher._id,
-                key: generateRandomKey(16)
-            });
-            await apikey.save();
+            if (data.accessType === "private") {
+                const keySercher=await Api.findOne({userId: req.session.user._id, routeName: data.routerName});
+                const apikey=await new APIkeys({
+                    userId: req.session.user._id,
+                    ApiID: keySercher._id,
+                    key: generateRandomKey(16)
+                });
+                await apikey.save();
+            }
             res.send("Data saved");
         } catch (error) {
             console.error("Error saving data:", error);
