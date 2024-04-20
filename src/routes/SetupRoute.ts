@@ -1,6 +1,7 @@
 import express,{Request,Response} from "express";
 import user from "../models/User.ts";
 import Api from "../models/Api.ts";
+import APIkeys from "../models/APIkeys.ts";
 
 const SetupRoute=express.Router();
 
@@ -12,15 +13,18 @@ SetupRoute.get("/api/:username/:routeName", async (req:Request, res:Response) =>
 
     const User = await user.findOne({ username: username });
     if(User && User.username === username){
+
         const data = await Api.findOne({ userId: User._id, routePath: routeName });
+        const apiKey = await APIkeys.findOne({ ApiID: data._id });
         if (data) {
             if (data.accessType === "private") {
 
-                if (User.passKey != key) {
-                    return res.status(401).send("Unauthorized");
+                if (User.passKey === key || apiKey.key===key) {
+                    return  res.status(200).send(data.routeData);
+
                 }
                 else {
-                    res.status(200).send(data.routeData);
+                    return res.status(401).send("Unauthorized");
                 }
             }else {
                 res.status(200).send(data.routeData);

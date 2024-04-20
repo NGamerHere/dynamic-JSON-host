@@ -22,8 +22,9 @@ const apiSchema = new mongoose.Schema({
     routeDescription:{
         type: String,
         required: true
-    },accessType:{
-      type: String,
+    },accessType: {
+        type: String,
+        enum: ['public', 'private'],
         required: true
     }
 });

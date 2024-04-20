@@ -10,9 +10,6 @@ interface UserData{
     email:string;
 }
 
-
-
-
 LoginRoute.get('/login', (req: Request, res: Response) => {
 
     if (req.session.user) {
