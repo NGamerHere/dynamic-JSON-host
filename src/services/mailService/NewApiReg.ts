@@ -1,6 +1,6 @@
 import mailgun from "mailgun-js/lib/mailgun";
 
-function MailServiceReg(email:string,key:string){
+function MailServiceReg(email:string,key:string,ApiName:string,ApiRoute:string){
     const mg = mailgun({
         apiKey: process.env.APISENDERKEY,
         domain: process.env.APIDOMAIN
@@ -12,9 +12,12 @@ function MailServiceReg(email:string,key:string){
         to: email,
         subject: "Hello",
         text: "Testing some Mailgun awesomeness!",
-        html: "<div>" +
-            "<h1>Thank you for registering</h1>" +
-            "<h2>welcome to dynamic API</h2>" +  "<p>here is your master key to access the api "+key+"<p>"+"</div>"
+        html:"<div>"+
+              "<h1>add the new api</h1>"+
+                "<h2>Api Name : "+ApiName+"</h2>"+
+                "<h2>Api Route : "+ApiRoute+"</h2>"+
+                "<h2>Api Key : "+key+"</h2>"
+            +"</div>"
     };
 
 // Send the email

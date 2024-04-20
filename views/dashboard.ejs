@@ -26,7 +26,6 @@
 
     <!-- Greeting -->
     <h3 class="text-lg mb-4">Hi <%= name %></h3>
-    <h3 class="text-lg mb-4 text-grey-100">Your pass key: <%= key %></h3>
 
     <!-- Routes Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -34,16 +33,14 @@
             <div class="border border-gray-300 rounded-lg p-6 shadow-md">
                 <h2 class="pb-3 text-lg font-medium">
                     API at route
-                    <% if (item.accessType === "private"){ %>
-                    <a target="_blank" href="/api/<%= name %>/<%= item.routePath %>?key=<%= key %>" class="text-blue-500 hover:text-blue-700 hover:underline"> /<%= item.routePath %> </a>
-                    <% } else { %>
-                        <a target="_blank" href="/api/<%= name %>/<%= item.routePath %>" class="text-blue-500 hover:text-blue-700 hover:underline"> /<%= item.routePath %> </a>
-                    <% } %>
+                    <a target="_blank" href="/api/<%= name %>/<%= item.routePath %>" class="text-blue-500 hover:text-blue-700 hover:underline"> /<%= item.routePath %> </a>
                 </h2>
 
                 <h2 class="pb-3 text-lg font-medium">Route Name: <%= item.routeName %></h2>
                 <h3 class="pb-3 font-bold">Route Description</h3>
+                <p class="pb-3">this is an <%= item.accessType %> api</p>
                 <p class="mb-4"><%= item.routeDescription %></p>
+
                 <button onclick="deleteRoute('<%= item.routeName %>')" class="btn-delete">Delete</button>
             </div>
         <% }); %>

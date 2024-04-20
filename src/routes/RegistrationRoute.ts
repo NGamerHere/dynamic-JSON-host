@@ -3,9 +3,6 @@ import user from "../models/User.ts";
 import generateRandomKey from "../services/generateRandomKey.ts";
 import MailService from "../services/mailService/MailService.ts";
 
-
-
-
 const RegistrationRoute=express.Router();
 
 RegistrationRoute.get('/registration', (req: Request, res: Response) => {

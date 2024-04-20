@@ -23,6 +23,9 @@ SetupRoute.get("/api/:username/:routeName", async (req: Request, res: Response) 
                     if (apikey && apikey.key === key) {
                         return res.status(200).send(data.routeData);
                     } else {
+                        if (key=== undefined) {
+                            return res.status(400).send("Key is required");
+                        }
                         return res.status(401).send("Unauthorized");
                     }
                 } else {

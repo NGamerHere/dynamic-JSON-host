@@ -20,7 +20,7 @@ HomeRoutes.get('/dashboard', async (req: Request, res: Response) => {
         if (!User) {
             return res.redirect('/login');
         }
-        res.render('dashboard',{name: req.session.user.username,router:router,key:User.passKey});
+        res.render('dashboard',{name: req.session.user.username,router:router});
     } else {
         res.redirect('/login');
     }
