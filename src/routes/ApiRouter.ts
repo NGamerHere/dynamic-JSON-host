@@ -1,5 +1,4 @@
 import express from "express";
-
 import Api from "../models/Api.ts";
 import APIkeys from "../models/APIkeys.ts";
 import generateRandomKey from "../services/generateRandomKey.ts";
@@ -20,7 +19,6 @@ ApiRouter.delete("/api/:routeName", async (req, res) => {
         const data = await Api.findOne({userId: req.session.user._id, routeName: routeName});
         if (data) {
             await Api.deleteOne({userId: req.session.user._id, routeName: routeName});
-            await APIkeys.deleteOne({userId: req.session.user._id, ApiID: data._id});
             res.send("Data deleted");
         } else {
             res.status(400).send("Data not found");
@@ -43,28 +41,30 @@ ApiRouter.post("/addApi", async (req, res) => {
             if (gkApi) {
                 return res.status(400).json({ message: "Data in that route already exits" });
             }
-
-
-            const ds = new Api({
-                userId: req.session.user._id,
-                routeName: data.routerName,
-                routeData: data.routeData,
-                routePath: data.routePath,
-                routeDescription: data.routeDescription,
-                accessType: data.accessType
-            });
-            await ds.save();
             const key=generateRandomKey(16);
             if (data.accessType === "private") {
-                const keySercher=await Api.findOne({userId: req.session.user._id, routeName: data.routerName});
-                const apikey=await new APIkeys({
+                const api = new Api({
                     userId: req.session.user._id,
-                    ApiID: keySercher._id,
+                    routeName: data.routerName,
+                    routeData: data.routeData,
+                    routePath: data.routePath,
+                    routeDescription: data.routeDescription,
+                    accessType: data.accessType,
                     key: key
                 });
-                MailServiceReg(req.session.user.email,key, data.routerName, data.routePath);
-                await apikey.save();
+                await api.save();
+                MailServiceReg(req.session.user.email,key,data.routerName,data.routePath);
 
+            }else {
+                const api = new Api({
+                    userId: req.session.user._id,
+                    routeName: data.routerName,
+                    routeData: data.routeData,
+                    routePath: data.routePath,
+                    routeDescription: data.routeDescription,
+                    accessType: data.accessType
+                });
+                await api.save();
             }
             res.send("Data saved");
         } catch (error) {

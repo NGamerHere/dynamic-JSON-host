@@ -26,6 +26,8 @@ const apiSchema = new mongoose.Schema({
         type: String,
         enum: ['public', 'private'],
         required: true
+    },key:{
+        type: String
     }
 });
 
