@@ -2,6 +2,7 @@ import express from "express";
 
 import Api from "../models/Api.ts";
 import APIkeys from "../models/APIkeys.ts";
+import generateRandomKey from "../services/generateRandomKey.ts";
 
 const ApiRouter = express.Router();
 ApiRouter.get("/addApi", async (req, res) => {
@@ -18,6 +19,7 @@ ApiRouter.delete("/api/:routeName", async (req, res) => {
         const data = await Api.findOne({userId: req.session.user._id, routeName: routeName});
         if (data) {
             await Api.deleteOne({userId: req.session.user._id, routeName: routeName});
+            await APIkeys.deleteOne({userId: req.session.user._id, ApiID: data._id});
             res.send("Data deleted");
         } else {
             res.status(400).send("Data not found");
@@ -51,10 +53,11 @@ ApiRouter.post("/addApi", async (req, res) => {
                 accessType: data.accessType
             });
             await ds.save();
+            const keySercher=await Api.findOne({userId: req.session.user._id, routeName: data.routerName});
             const apikey=await new APIkeys({
                 userId: req.session.user._id,
-                ApiID: ds._id,
-                key: data.key
+                ApiID: keySercher._id,
+                key: generateRandomKey(16)
             });
             await apikey.save();
             res.send("Data saved");
