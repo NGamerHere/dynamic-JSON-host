@@ -16,8 +16,7 @@ require('dotenv').config();
 const app = express();
 
 // Configure morgan middleware
-morgan.token('client-ip', (req, res) => req.ip);
-app.use(morgan(':client-ip - :method :url :status :res[content-length] - :response-time ms'));
+
 
 app.use(cors());
 app.use(express.json());
