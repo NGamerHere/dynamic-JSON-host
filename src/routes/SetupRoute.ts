@@ -16,10 +16,11 @@ SetupRoute.get("/api/:username/:routeName", async (req:Request, res:Response) =>
 
         const data = await Api.findOne({ userId: User._id, routePath: routeName });
         const apiKey = await APIkeys.findOne({ ApiID: data._id });
+        const apikey = apiKey.key;
         if (data) {
             if (data.accessType === "private") {
 
-                if (User.passKey === key || apiKey.key===key) {
+                if (apikey===key) {
                     return  res.status(200).send(data.routeData);
 
                 }
