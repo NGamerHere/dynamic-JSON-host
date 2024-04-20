@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import session from "express-session";
 import morgan from "morgan";
 const cors = require('cors')
+import https from "https";
+import fs from "fs";
 import DBConnector from "./src/services/connection.ts";
 import handle404 from "./src/services/Notfound.ts";
 import LoginRoute from "./src/routes/LoginRoute.ts";
@@ -38,6 +40,8 @@ app.use(session({
     },
 }));
 
+
+
 app.use(setUpRoutes);
 app.use(LoginRoute);
 app.use(RegistrationRoute);
@@ -46,6 +50,13 @@ app.use(HomeRoutes);
 app.use(ApiRouter);
 app.use(handle404);
 
-app.listen(process.env.PORT, async () => {
-    console.log('Server is running on port 3000');
+
+const options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+};
+
+// Create HTTPS server
+https.createServer(options, app).listen(process.env.PORT, () => {
+    console.log('HTTPS server running on port 3000 ' );
 });

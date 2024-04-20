@@ -7,3 +7,7 @@ node_modules
 tester.mjs
 
 tester.js
+
+key.pem
+
+cert.pem

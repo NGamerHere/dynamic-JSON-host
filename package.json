@@ -20,6 +20,7 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "form-data": "^4.0.0",
+    "https": "^1.0.0",
     "iltorb": "^2.4.5",
     "mailgun": "^0.5.0",
     "mailgun-js": "^0.22.0",
