@@ -11,3 +11,9 @@ tester.js
 key.pem
 
 cert.pem
+
+ca_bundle.crt
+
+private.key
+
+certificate.crt
