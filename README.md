@@ -45,7 +45,8 @@ The HTTPS server will start running on port 3000 (or the port specified in your 
  when the api is public, you can access the API routes at https://localhost:3000/your-username/routeName
 
  when the api is private, you can access the API routes at https://localhost:3000/your-username/routeName?key=key
- that private key was going to be send to the user after the creation of the api via email
+ 
+that private key was going to be send to the user after the creation of the api via email
 
 ## contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
