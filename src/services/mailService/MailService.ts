@@ -1,12 +1,19 @@
-import mailgun from "mailgun-js/lib/mailgun";
+const nodemailer = require('nodemailer');
 
-function MailServiceReg(email:string,key:string){
-    const mg = mailgun({
-        apiKey: process.env.APISENDERKEY,
-        domain: process.env.APIDOMAIN
+function MailService(email:string,key:string) {
+
+// Create a transporter object with your email service provider's configuration
+    const transporter = nodemailer.transporter({
+        host: 'smtp.privateemail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.EMAILADDRESS,
+            pass: process.env.EMAILPASSWORD
+        }
     });
 
-// Define the email data
+
     const mailOptions = {
         from: "codingdatta@gmail.com",
         to: email,
@@ -14,16 +21,17 @@ function MailServiceReg(email:string,key:string){
         text: "Testing some Mailgun awesomeness!",
         html: "<div>" +
             "<h1>Thank you for registering</h1>" +
-            "<h2>welcome to dynamic API</h2>" +  "<p>here is your master key to access the api "+key+"<p>"+"</div>"
+            "<h2>welcome to dynamic API</h2>" + "<p>here is your master key to access the api " + key + "<p>" + "</div>"
     };
 
-// Send the email
-    mg.messages().send(mailOptions, (error, body) => {
+
+    transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.log(error);
-            return;
+            console.log('Error occurred:', error.message);
+        } else {
+            console.log('Email sent:', info.response);
         }
-        console.log(body);
     });
+
 }
-export default MailServiceReg;
+export default MailService;

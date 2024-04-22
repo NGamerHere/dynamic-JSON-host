@@ -49,8 +49,9 @@ app.use(handle404);
 
 
 const options = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem')
+    ca: fs.readFileSync('ca_bundle.crt'),
+    cert: fs.readFileSync('certificate.crt'),
+    key: fs.readFileSync('private.key')
 };
 
 // Create HTTPS server
