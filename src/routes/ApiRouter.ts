@@ -37,39 +37,38 @@ ApiRouter.post("/addApi", async (req, res) => {
             }
 
             const data = req.body;
-            const gkApi = await Api.findOne({ userId: req.session.user._id, routeName: data.routerName });
-            if (gkApi) {
-                return res.status(400).json({ message: "Data in that route already exits" });
-            }
-            const key=generateRandomKey(16);
-            if (data.accessType === "private") {
-                const api = new Api({
-                    userId: req.session.user._id,
-                    routeName: data.routerName,
-                    routeData: data.routeData,
-                    routePath: data.routePath,
-                    routeDescription: data.routeDescription,
-                    accessType: data.accessType,
-                    key: key
-                });
-                await api.save();
-                MailServiceReg(req.session.user.email,key,data.routerName,data.routePath);
+            const existingApi = await Api.findOne({
+                userId: req.session.user._id,
+                routeName: data.routerName,
+                routePath: data.routePath,
+            });
 
-            }else {
-                const api = new Api({
-                    userId: req.session.user._id,
-                    routeName: data.routerName,
-                    routeData: data.routeData,
-                    routePath: data.routePath,
-                    routeDescription: data.routeDescription,
-                    accessType: data.accessType
-                });
-                await api.save();
+            if (existingApi) {
+                return res.status(400).json({ message: "An API with the same route name and path already exists" });
             }
+
+            const key = data.accessType === "private" ? generateRandomKey(16) : null;
+
+            const api = new Api({
+                userId: req.session.user._id,
+                routeName: data.routerName,
+                routeData: data.routeData,
+                routePath: data.routePath,
+                routeDescription: data.routeDescription,
+                accessType: data.accessType,
+                key: key,
+            });
+
+            await api.save();
+
+            if (data.accessType === "private") {
+                MailServiceReg(req.session.user.email, key, data.routerName, data.routePath);
+            }
+
             res.send("Data saved");
         } catch (error) {
             console.error("Error saving data:", error);
-            res.status(500).send("Error saving data");
+            res.status(500).send(`Error saving data: ${error.message}`);
         }
     } else {
         return res.redirect('/login');

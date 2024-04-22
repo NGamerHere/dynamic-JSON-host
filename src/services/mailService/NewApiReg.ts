@@ -1,18 +1,18 @@
 const nodemailer = require('nodemailer');
 
 function MailService(email:string,key:string,ApiName:string,ApiRoute:string){
-    const transporter = nodemailer.transporter({
+    const transporter = nodemailer.createTransport({
         host: 'smtp.privateemail.com',
         port: 465,
         secure: true,
         auth: {
             user: process.env.EMAILADDRESS,
-            pass: process.env.EMAILPASSWORD
+            pass: process.env.PASSWORDEMAIL
         }
     });
 
     const mailOptions = {
-        from: "codingdatta@gmail.com",
+        from: "admin@hostyourapi.click",
         to: email,
         subject: "Hello",
         text: "Testing some Mailgun awesomeness!",

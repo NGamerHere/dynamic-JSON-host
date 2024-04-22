@@ -1,21 +1,19 @@
 const nodemailer = require('nodemailer');
 
-function MailService(email:string,key:string) {
-
-// Create a transporter object with your email service provider's configuration
-    const transporter = nodemailer.transporter({
+function MailService(email: string, key: string) {
+    // Create a transporter object with your email service provider's configuration
+    const transporter = nodemailer.createTransport({
         host: 'smtp.privateemail.com',
         port: 465,
         secure: true,
         auth: {
             user: process.env.EMAILADDRESS,
-            pass: process.env.EMAILPASSWORD
+            pass: process.env.PASSWORDEMAIL
         }
     });
 
-
     const mailOptions = {
-        from: "codingdatta@gmail.com",
+        from: "admin@hostyourapi.click",
         to: email,
         subject: "Hello",
         text: "Testing some Mailgun awesomeness!",
@@ -24,7 +22,6 @@ function MailService(email:string,key:string) {
             "<h2>welcome to dynamic API</h2>" + "<p>here is your master key to access the api " + key + "<p>" + "</div>"
     };
 
-
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.log('Error occurred:', error.message);
@@ -32,6 +29,6 @@ function MailService(email:string,key:string) {
             console.log('Email sent:', info.response);
         }
     });
-
 }
+
 export default MailService;
