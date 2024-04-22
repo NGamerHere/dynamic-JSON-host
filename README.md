@@ -33,7 +33,7 @@ To run:
 bun run index.ts
 ```
 
-After running the server, you can access the website at https://localhost:3000
+The HTTPS server will start running on port 3000 (or the port specified in your .env file).
 
 ## Usage
   
@@ -47,9 +47,12 @@ After running the server, you can access the website at https://localhost:3000
  when the api is private, you can access the API routes at https://localhost:3000/your-username/routeName?key=key
  that private key was going to be send to the user after the creation of the api via email
 
+## contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
-## Note
+This project is licensed under the MIT License - see the [MIT](https://choosealicense.com/licenses/mit/)
+
 
 
 This project was created using `bun init` in bun v1.0.21. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
