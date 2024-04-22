@@ -26,7 +26,7 @@ const url=`mongodb+srv://${process.env.DBUSERNAME}:${process.env.DBPASSWORD}@clu
 DBConnector(url);
 
 app.use(session({
-    secret: process.env.sessionKey,
+    secret: process.env.SESSIONKEY,
     resave: false,
     saveUninitialized: true,
     cookie: {

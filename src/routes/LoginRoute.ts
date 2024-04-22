@@ -24,7 +24,7 @@ LoginRoute.post('/login',async (req:Request,res:Response)=>{
     const flame = await user.findOne({ email: email });
 
     if (flame) {
-        if (flame.password === password) {
+        if (await Bun.password.verify(password, flame.password)) {
             const ds:UserData = {
                 _id:flame._id,
                 username:flame.username,

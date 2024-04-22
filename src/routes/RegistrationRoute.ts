@@ -26,12 +26,20 @@ RegistrationRoute.post('/registration',async (req:Request,res:Response)=> {
         return res.render('registration',{error:true,message:"Username is already exist"});
     }
     else {
-        const key=generateRandomKey(16);
+        const key=generateRandomKey(16)
+        const envkey:string = await Bun.password.hash(key, {
+            algorithm: "bcrypt",
+            cost: 4, // number between 4-31
+        });
+        const bcryptHash = await Bun.password.hash(password, {
+            algorithm: "bcrypt",
+            cost: 4, // number between 4-31
+        });
         const newUser =await new user({
             username: username,
             email: email,
-            password: password,
-            passKey: key
+            password: bcryptHash,
+            passKey: envkey
         });
 
         newUser.save().then(async (result: any) => {
