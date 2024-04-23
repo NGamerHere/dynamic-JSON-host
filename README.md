@@ -40,11 +40,11 @@ The HTTPS server will start running on port 3000 (or the port specified in your 
   you can add the api routes by going to the /addApi route
 
 
- after logging in you can access the API routes at https://localhost:3000/your-username/
+ after logging in you can access the API routes at https://localhost:3000/dashboard/
 
- when the api is public, you can access the API routes at https://localhost:3000/your-username/routeName
+ when the api is public, you can access the API routes at https://localhost:3000/api/your-username/routeName
 
- when the api is private, you can access the API routes at https://localhost:3000/your-username/routeName?key=key
+ when the api is private, you can access the API routes at https://localhost:3000/api/your-username/routeName?key=key
  
 that private key was going to be send to the user after the creation of the api via email
 
