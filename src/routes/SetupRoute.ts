@@ -1,7 +1,8 @@
-import express, { Request, Response } from "express";
+import express, {Request, Response} from "express";
 import user from "../models/User.ts";
 import Api from "../models/Api.ts";
-import APIkeys from "../models/APIkeys.ts";
+import api from "../models/Api.ts";
+import routerSender from "../services/ApiService/routerSender.ts";
 
 const SetupRoute = express.Router();
 
@@ -41,5 +42,31 @@ SetupRoute.get("/api/:username/:routeName", async (req: Request, res: Response) 
         return res.status(500).send("Internal Server Error");
     }
 });
+
+const UserError=(message:string)=>{
+    return {
+        message: message
+    };
+}
+
+SetupRoute.get('/api/:username/',async (req:Request,res:Response)=>{
+    const username:string=req.params.username;
+    const key: string = req.query.key as string;
+    const userData=await user.findOne({username: username});
+    if (userData){
+        const apiData=await api.find({userId: userData._id});
+        if (apiData){
+            if (key===userData.passKey){
+                res.send(routerSender(apiData));
+            }else {
+                return res.send(UserError("key was wrong or not found"))
+            }
+        }else {
+            res.send(UserError('you have zero apis'));
+        }
+    }else {
+        res.send(UserError('your account was not found'));
+    }
+})
 
 export default SetupRoute;
