@@ -1,17 +1,45 @@
 import express from "express";
 import Api from "../models/Api.ts";
-import APIkeys from "../models/APIkeys.ts";
 import generateRandomKey from "../services/generateRandomKey.ts";
 import MailServiceReg from "../services/mailService/NewApiReg.ts";
+import editApiRouteSender from "../services/ApiService/editApiRouteSender.ts";
 
 const ApiRouter = express.Router();
-ApiRouter.get("/addApi", async (req, res) => {
+ApiRouter.get("/addApi", (req, res) => {
     if (req.session.user) {
         res.render('addAPI');
     } else {
         return res.redirect('/login');
     }
 });
+ApiRouter.get("/editApi",async (req,res)=>{
+    const routeName=req.query.key;
+
+   if (req.session.user){
+       const data = await Api.findOne({userId: req.session.user._id, routeName: routeName});
+       res.render('editApi',{editData:'two',data:editApiRouteSender(data)});
+   }else {
+       res.redirect('/login');
+   }
+})
+ApiRouter.post("/editApi",async (req,res)=>{
+   const routeName=req.body.routeName;
+   const routeData=req.body.routeData;
+    if (req.session.user) {
+        let data = await Api.findOne({userId: req.session.user._id, routeName: routeName});
+        if (data) {
+            data.routeData = JSON.parse(routeData.trim());
+           await data.save();
+           res.redirect('/dashboard');
+        } else {
+            res.redirect('/login');
+
+
+        }
+    }
+});
+
+
 
 ApiRouter.delete("/api/:routeName", async (req, res) => {
     const routeName:string = req.params.routeName;
@@ -25,7 +53,6 @@ ApiRouter.delete("/api/:routeName", async (req, res) => {
         }
     }else {
         return res.redirect('/login');
-
     }
 });
 
