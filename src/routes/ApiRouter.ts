@@ -78,12 +78,14 @@ ApiRouter.post("/addApi", async (req, res) => {
             if (existingApi) {
                 return res.status(400).json({ message: "An API with the same route name and path already exists" });
             }
-            let key = data.accessType === "private" ? generateRandomKey(16) : null;
-            if (key!=null){
-                key=await Bun.password.hash(key,{
+            let key=null;
+            let envKey;
+            if (data.accessType === "private"){
+                key=generateRandomKey(16);
+                envKey=await Bun.password.hash(key,{
                     algorithm: "bcrypt",
                     cost: 4
-                })
+                });
             }
             const api = new Api({
                 userId: req.session.user._id,
@@ -92,7 +94,7 @@ ApiRouter.post("/addApi", async (req, res) => {
                 routePath: data.routePath,
                 routeDescription: data.routeDescription,
                 accessType: data.accessType,
-                key: key,
+                key: envKey,
             });
 
             await api.save();
