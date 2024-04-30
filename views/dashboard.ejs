@@ -40,8 +40,9 @@
                 <h3 class="pb-3 font-bold">Route Description</h3>
                 <p class="pb-3">this is an <%= item.accessType %> api</p>
                 <p class="mb-4"><%= item.routeDescription %></p>
-
+                <a href="/editApi?key=<%=item.routeName%>"  class="btn-edit">edit API</a>
                 <button onclick="deleteRoute('<%= item.routeName %>')" class="btn-delete">Delete</button>
+
             </div>
         <% }); %>
     </div>
