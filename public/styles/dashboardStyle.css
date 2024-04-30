@@ -41,6 +41,20 @@
     border: 1px solid #e53e3e;
 }
 
+.btn-edit {
+    padding: 0.5rem 1rem;
+    color: white;
+    border-radius: 0.25rem;
+    background-color: #48bb78; /* Change the background color */
+    border: 1px solid #48bb78; /* Set the border color */
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-edit:hover {
+    background-color: #38a169; /* Change the hover background color */
+    border-color: #38a169; /* Set the hover border color */
+}
+
 .btn-delete:hover {
     background-color: #c53030;
     border-color: #c53030;
