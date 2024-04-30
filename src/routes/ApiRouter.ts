@@ -17,7 +17,12 @@ ApiRouter.get("/editApi",async (req,res)=>{
 
    if (req.session.user){
        const data = await Api.findOne({userId: req.session.user._id, routeName: routeName});
-       res.render('editApi',{editData:'two',data:editApiRouteSender(data)});
+       if (data.accessType==='public'){
+           return res.render('editApi',{editData:'two',data:editApiRouteSender(data)});
+       }else {
+           return res.render('editApi',{editData:'two',data:{}});
+       }
+
    }else {
        res.redirect('/login');
    }
@@ -73,9 +78,13 @@ ApiRouter.post("/addApi", async (req, res) => {
             if (existingApi) {
                 return res.status(400).json({ message: "An API with the same route name and path already exists" });
             }
-
-            const key = data.accessType === "private" ? generateRandomKey(16) : null;
-
+            let key = data.accessType === "private" ? generateRandomKey(16) : null;
+            if (key!=null){
+                key=await Bun.password.hash(key,{
+                    algorithm: "bcrypt",
+                    cost: 4
+                })
+            }
             const api = new Api({
                 userId: req.session.user._id,
                 routeName: data.routerName,
