@@ -20,12 +20,7 @@
     "express-session": "^1.18.0",
     "form-data": "^4.0.0",
     "https": "^1.0.0",
-    "iltorb": "^2.4.5",
-    "mailgun": "^0.5.0",
-    "mailgun-js": "^0.22.0",
-    "mailgun.js": "^10.2.1",
     "mongoose": "^8.3.1",
-    "morgan": "^1.10.0",
     "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0"
   }
