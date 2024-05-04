@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import bodyParser from "body-parser";
 import session from "express-session";
-const cors = require('cors')
 import https from "https";
 import fs from "fs";
 import DBConnector from "./src/services/connection.ts";
