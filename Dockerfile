@@ -10,7 +10,7 @@ FROM base as dev
 
 RUN bun install
 
-EXPOSE 3000
+EXPOSE 443
 
 CMD ["bun", "run","index.ts"]
 
