@@ -23,8 +23,11 @@ app.set('view engine', 'ejs');
 const url=`mongodb+srv://${process.env.DBUSERNAME}:${process.env.DBPASSWORD}@cluster0.nl7thfs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 DBConnector(url);
 
+
+const secret:string=process.env.SESSIONKEY || "dynamicJSONHOST";
+
 app.use(session({
-    secret: process.env.SESSIONKEY,
+    secret: secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -53,6 +56,6 @@ const options = {
 };
 
 // Create HTTPS server
-https.createServer(options, app).listen(process.env.PORT, () => {
+https.createServer(options, app).listen(process.env.PORT || 3000, () => {
     console.log('HTTPS server running on port 3000 ' );
 });
