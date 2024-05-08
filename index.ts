@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import bodyParser from "body-parser";
 import session from "express-session";
 import https from "https";
