@@ -1,4 +1,4 @@
-import express, {Request, Response} from "express";
+import express, {type Request,type Response} from "express";
 import user from "../models/User.ts";
 import Api from "../models/Api.ts";
 import api from "../models/Api.ts";
@@ -18,14 +18,13 @@ SetupRoute.get("/api/:username/:routeName", async (req: Request, res: Response) 
             const data = await Api.findOne({ userId: User._id, routePath: routeName });
 
             if (data) {
-
                 if (data.accessType === "private") {
+                    if (key === undefined) {
+                        return res.status(400).send(UserError("key was required"));
+                    }
                     if (await Bun.password.verify(key, data.key)) {
                         return res.status(200).send(data.routeData);
                     } else {
-                        if (key==undefined) {
-                            return res.status(400).send(UserError("key was required"));
-                        }
                         return res.status(401).send(UserError("key was wrong"));
                     }
                 } else {

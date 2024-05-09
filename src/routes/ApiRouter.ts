@@ -12,20 +12,20 @@ ApiRouter.get("/addApi", (req, res) => {
         return res.redirect('/login');
     }
 });
-ApiRouter.get("/editApi",async (req,res)=>{
-    const routeName=req.query.key;
+ApiRouter.get("/editApi", async (req, res) => {
+    const routeName = req.query.key?.toString(); // Convert routeName to string
 
-   if (req.session.user){
-       const data = await Api.findOne({userId: req.session.user._id, routeName: routeName});
-       if (data.accessType==='public'){
-           return res.render('editApi',{editData:'two',data:editApiRouteSender(data)});
-       }else {
-           return res.render('editApi',{editData:'two',data:{}});
-       }
+    if (req.session.user) {
+        const data = await Api.findOne({ userId: req.session.user._id, routeName: routeName });
+        if (data && data.accessType === 'public') {
+            return res.render('editApi', { editData: 'two', data: editApiRouteSender(data) });
+        } else {
+            return res.render('editApi', { editData: 'two', data: {} });
+        }
 
-   }else {
-       res.redirect('/login');
-   }
+    } else {
+        res.redirect('/login');
+    }
 })
 ApiRouter.post("/editApi",async (req,res)=>{
    const routeName=req.body.routeName;
@@ -33,10 +33,12 @@ ApiRouter.post("/editApi",async (req,res)=>{
     if (req.session.user) {
         let data = await Api.findOne({userId: req.session.user._id, routeName: routeName});
         if (data) {
+            console.log(routeData);
             data.routeData = JSON.parse(routeData.trim());
            await data.save();
            res.redirect('/dashboard');
-        } else {
+        } 
+        else {
             res.redirect('/login');
 
 
@@ -78,7 +80,7 @@ ApiRouter.post("/addApi", async (req, res) => {
             if (existingApi) {
                 return res.status(400).json({ message: "An API with the same route name and path already exists" });
             }
-            let key=null;
+            let key="1234";
             let envKey;
             if (data.accessType === "private"){
                 key=generateRandomKey(16);
@@ -104,7 +106,7 @@ ApiRouter.post("/addApi", async (req, res) => {
             }
 
             res.send("Data saved");
-        } catch (error) {
+        } catch (error:any) {
             console.error("Error saving data:", error);
             res.status(500).send(`Error saving data: ${error.message}`);
         }

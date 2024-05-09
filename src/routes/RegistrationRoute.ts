@@ -1,20 +1,25 @@
-import express,{Request,Response} from "express";
+import express,{type Request,type Response, type NextFunction} from "express";
+import { type SessionData } from "../services/types/SessionData.ts";
 import user from "../models/User.ts";
 import generateRandomKey from "../services/generateRandomKey.ts";
 import MailService from "../services/mailService/MailService.ts";
 
 const RegistrationRoute=express.Router();
 
-RegistrationRoute.get('/registration', (req: Request, res: Response) => {
-    if (req.session.user) {
-        res.redirect('/dashboard');
-    }
-    res.render('registration',{error:false});
-})
-RegistrationRoute.post('/registration',async (req:Request,res:Response)=> {
-    if (req.session.user) {
+
+const IAT=(req: Request, res: Response, next: NextFunction)=>{
+    if(req.session.user){
         return res.redirect('/dashboard');
     }
+    next();
+}
+
+RegistrationRoute.get('/registration',IAT, (req: Request, res: Response) => {
+   
+    res.render('registration',{error:false});
+})
+RegistrationRoute.post('/registration',IAT,async (req:Request,res:Response)=> {
+    
     const username: string = req.body.username;
     const email: string = req.body.email;
     const password: string = req.body.password;

@@ -1,12 +1,17 @@
-import express,{Request,Response} from "express";
+import express,{type Request,type Response} from "express";
 import api from "../models/Api.ts";
 import user from "../models/User.ts";
 
 const HomeRoutes=express.Router();
 
-HomeRoutes.get("/", (req: Request, res: Response) => {
+HomeRoutes.get("/", async (req: Request, res: Response) => {
     if (req.session.user) {
-        res.render('home',{not:false,log:true,name:req.session.user.name});
+        const User = await user.findOne({ _id: req.session.user._id });
+        if (User) {
+            res.render('home',{not:false,log:true,name: User.username});
+        } else {
+            res.render('home',{not:false,log:true,name: null});
+        }
     }
     res.render('home',{not:true,log:false});
 });

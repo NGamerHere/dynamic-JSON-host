@@ -1,5 +1,6 @@
-import express,{Request,Response} from "express";
+import express,{type Request,type Response} from "express";
 import user from "../models/User.ts";
+import type { ObjectId } from "mongoose";
 require('dotenv').config();
 
 
@@ -26,7 +27,7 @@ LoginRoute.post('/login',async (req:Request,res:Response)=>{
     if (flame) {
         if (await Bun.password.verify(password, flame.password)) {
             const ds:UserData = {
-                _id:flame._id,
+                _id: flame._id.toString(), // Convert ObjectId to string
                 username:flame.username,
                 email:flame.email
             }
