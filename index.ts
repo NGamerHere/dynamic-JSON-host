@@ -1,4 +1,4 @@
-import express,{type Request,type Response} from 'express';
+import express,{type Request,type Response,type Express, response} from 'express';
 import bodyParser from "body-parser";
 import session from "express-session";
 import https from "https";
@@ -13,7 +13,7 @@ import setUpRoutes from "./src/routes/SetupRoute.ts";
 import ApiRouter from "./src/routes/ApiRouter.ts";
 require('dotenv').config();
 
-const app = express();
+const app: Express = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -55,7 +55,11 @@ const options = {
     key: fs.readFileSync('private.key')
 };
 
+
+
+
 // Create HTTPS server
 https.createServer(options, app).listen(process.env.PORT || 3000, () => {
-    console.log('HTTPS server running on port 3000 ' );
+
+    console.log(`HTTPS server running on port  ` );
 });

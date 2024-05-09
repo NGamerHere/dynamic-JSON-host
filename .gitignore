@@ -19,3 +19,6 @@ ca_bundle.crt
 private.key
 
 certificate.crt
+
+
+DBtester.ts
