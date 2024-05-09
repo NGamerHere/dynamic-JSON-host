@@ -33,9 +33,9 @@ ApiRouter.post("/editApi",async (req,res)=>{
     if (req.session.user) {
         let data = await Api.findOne({userId: req.session.user._id, routeName: routeName});
         if (data) {
-            console.log(routeData);
             data.routeData = JSON.parse(routeData.trim());
            await data.save();
+           console.log(req.session.user.username + " edited his API named "+routeName);
            res.redirect('/dashboard');
         } 
         else {
@@ -100,6 +100,8 @@ ApiRouter.post("/addApi", async (req, res) => {
             });
 
             await api.save();
+            console.log(req.session.user.username + " added the new api  named + "+ data.routeName);
+            
 
             if (data.accessType === "private") {
                 MailServiceReg(req.session.user.email, key, data.routerName, data.routePath);

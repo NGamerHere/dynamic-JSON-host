@@ -7,7 +7,6 @@ export interface SessionData {
     _id: string;
     username: string;
     email: string;
-    name?:string
   };
 }
 
@@ -16,8 +15,7 @@ declare module 'express-session' {
     user?: {
       _id: string;
       username: string;
-      email: string;
-      name?:string
+      email: string; 
     };
   }
 }
