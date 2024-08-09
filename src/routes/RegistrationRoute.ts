@@ -15,7 +15,6 @@ const IAT=(req: Request, res: Response, next: NextFunction)=>{
 }
 
 RegistrationRoute.get('/registration',IAT, (req: Request, res: Response) => {
-   
     res.render('registration',{error:false});
 })
 RegistrationRoute.post('/registration',IAT,async (req:Request,res:Response)=> {
@@ -32,10 +31,10 @@ RegistrationRoute.post('/registration',IAT,async (req:Request,res:Response)=> {
     }
     else {
         const key=generateRandomKey(16)
-        const envkey:string = await Bun.password.hash(key, {
-            algorithm: "bcrypt",
-            cost: 4, // number between 4-31
-        });
+        // const envkey:string = await Bun.password.hash(key, {
+        //     algorithm: "bcrypt",
+        //     cost: 4, // number between 4-31
+        // });
         const bcryptHash = await Bun.password.hash(password, {
             algorithm: "bcrypt",
             cost: 4, // number between 4-31
@@ -44,12 +43,12 @@ RegistrationRoute.post('/registration',IAT,async (req:Request,res:Response)=> {
             username: username,
             email: email,
             password: bcryptHash,
-            passKey: envkey
+            passKey: key
         });
 
         newUser.save().then(async (result: any) => {
             console.log("new user was added "+result.username);
-            MailService(email,key);
+            //MailService(email,key);
             res.redirect('/login');
         }).catch((err: any) => {
             console.log(err);
