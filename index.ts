@@ -32,7 +32,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
         secure: false,
-        maxAge: 60 * 60 * 24 * 7 * 1000, // 7 days
+        maxAge: 60 * 60 * 24 * 7 * 1000,
     },
 }));
 
@@ -48,18 +48,6 @@ app.use(ApiRouter);
 
 app.use(handle404);
 
-
-const options = {
-    ca: fs.readFileSync('ca_bundle.crt'),
-    cert: fs.readFileSync('certificate.crt'),
-    key: fs.readFileSync('private.key')
-};
-
-
-
-
-// Create HTTPS server
-https.createServer(options, app).listen(process.env.PORT || 3000, () => {
-
-    console.log(`HTTPS server running on port  ` );
-});
+app.listen(process.env.PORT , function () {
+    console.log(`HTTPS server running on port  `+process.env.PORT );
+})
