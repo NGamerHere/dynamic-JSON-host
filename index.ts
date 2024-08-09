@@ -1,8 +1,6 @@
 import express,{type Request,type Response,type Express, response} from 'express';
 import bodyParser from "body-parser";
 import session from "express-session";
-import https from "https";
-import fs from "fs";
 import DBConnector from "./src/services/connection.ts";
 import handle404 from "./src/services/Notfound.ts";
 import LoginRoute from "./src/routes/LoginRoute.ts";
@@ -11,6 +9,7 @@ import LogoutRoute from "./src/routes/LogoutRoute.ts";
 import HomeRoutes from "./src/routes/HomeRoutes.ts";
 import setUpRoutes from "./src/routes/SetupRoute.ts";
 import ApiRouter from "./src/routes/ApiRouter.ts";
+import MongoStore from "connect-mongo";
 require('dotenv').config();
 
 const app: Express = express();
@@ -30,6 +29,7 @@ app.use(session({
     secret: secret,
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: url }),
     cookie: {
         secure: false,
         maxAge: 60 * 60 * 24 * 7 * 1000,
